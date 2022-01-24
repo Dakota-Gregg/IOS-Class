@@ -1,0 +1,43 @@
+What is the diffrence between var and let?
+	Let must have its value set only once, but not nessarly at runtime.
+	Var can change its value as many times as needed.
+
+What is an optional?
+	An optional is a value that can either nil or not nil.
+
+What is optional chaining vs optional binding?
+	optional chaining is the linking of queries that may fail at any
+	moment when one of the chains value is nil, while optional binding
+	is checking to see if there is a value in the optional and if there
+	is set a constant or variable to that value
+
+What are the way to unwrap an optional? are they safe?
+	Forced unwrapping is the act of stating there is definitly
+	 a value in there.Prone to human error, optional chaining is a series of 
+	queries that will give the desired outcome through multiple optionals unless 
+	the value of any of those optionals is nil in which case it safely terminates,
+	
+What is a closure?
+	In simplist terms a closure is a block of code that can be called later.
+
+What is the diffrent between a class and a struct?
+	A class is defined in refrential types and struct are defined with values types.
+
+what is the syntax?? do?
+	It handles optionals by provideing a default value should the optional be empty.
+
+what is a tuple?
+	A compound value for example returning multiple values from functions can be handled with tuples.
+
+what is any vs anyobject?
+	any can be any datatype at all, while anyobject can be any instance of a classtype
+	
+what is a protocol?
+	a set of requirement that any class, enumeration, and strucs can be forced to follow.
+
+what is delegation?
+	initializers can delegate some of the initialization process to other initializers.
+	this avoids duplicating code across multiple initializers.
+
+Explian what UIKit is?
+	UIkit is a useful api connecting UI to controller classes and simplifies the application building process significantly.
