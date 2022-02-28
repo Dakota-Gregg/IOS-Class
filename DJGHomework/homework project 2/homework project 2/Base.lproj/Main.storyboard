@@ -234,6 +234,7 @@
                     <connections>
                         <outlet property="lblName" destination="AzJ-cK-bhg" id="EE7-zL-eOC"/>
                         <outlet property="searchBar" destination="YSg-Xt-crZ" id="wGl-ad-rdx"/>
+                        <outlet property="segFavorites" destination="E9R-yx-OIF" id="3gK-5y-tLg"/>
                         <outlet property="tblMoviesList" destination="TjL-9A-iQ5" id="zBT-TF-UI1"/>
                         <outlet property="txtName" destination="AEI-wz-tiv" id="x8s-Bh-P3v"/>
                         <segue destination="E8o-mB-8am" kind="presentation" identifier="MoviesToDetails" modalPresentationStyle="fullScreen" id="4oq-c8-zJA"/>

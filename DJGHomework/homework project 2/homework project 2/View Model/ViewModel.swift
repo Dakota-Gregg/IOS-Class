@@ -14,6 +14,7 @@ public class ViewModel{
     private var isLoading = false
     private var isLoading2 = false
     private var temp = ""
+    private var tempCache = [movie]()
     @Published private (set) var favList = [movie]()
     @Published private (set) var movieSelected: movie?
     @Published private (set) var movieList = [movie]()
@@ -88,41 +89,59 @@ public class ViewModel{
         self.productionCompaniesLogoCache.removeAll()
         self.productionCompaniesCache.removeAll()
     }
+    func clearFavorites(){
+        favList.removeAll()
+        UserDefaults.standard.removeObject(forKey: "favList")
+    }
     func getFavoriteMovies(){
         if UserDefaults.standard.object(forKey: "favList") != nil{
-            self.favList = UserDefaults.standard.object(forKey: "favList") as! [movie]
+            self.favList = try! JSONDecoder().decode( [movie].self, from: UserDefaults.standard.object(forKey: "favList") as! Data)
+            for var i in self.favList{
+                i.isFav = true
+            }
         }
         else {
             return
         }
+        print("success",favList)
     }
     func favoriteMovie(favMovie: movie){
-        var favorite = favMovie
-        favorite.isFav = true
-        for var i in self.movieList{
-            if i.id == favMovie.id{
-                i.isFav = true
-                self.favList.append(favorite)
-                if let data = try? JSONEncoder().encode(self.favList) {
-                    UserDefaults.standard.set(data, forKey: "favList")
+            var favorite = favMovie
+            favorite.isFav = true
+            for (index, movie) in movieList.enumerated(){
+                if movie.id == favMovie.id{
+                    movieList[index].isFav = true
                 }
-                return
             }
-        }
+            favList.append(favorite)
+            if let data = try? JSONEncoder().encode(self.favList) {
+                UserDefaults.standard.set(data, forKey: "favList")
+                }
     }
     func unfavoriteMovie(favMovie: movie){
         var favorite = favMovie
-        favorite.isFav = false
-        for (i,var item) in movieList.enumerated(){
-            if item.id == favMovie.id{
-                item.isFav = false
-                favList.remove(at: i)
-                if let data = try? JSONEncoder().encode(favList) {
-                             UserDefaults.standard.set(data, forKey: "favList")
-                         }
-                return
+        favorite.isFav = true
+        for (index, movie) in movieList.enumerated(){
+            if movie.id == favMovie.id{
+                movieList[index].isFav = false
             }
         }
+        for (index, movie) in favList.enumerated(){
+            if movie.id == favMovie.id{
+                favList.remove(at: index)
+            }
+        }
+        if let data = try? JSONEncoder().encode(self.favList) {
+            UserDefaults.standard.set(data, forKey: "favList")
+            }
+    }
+    func favoritesFlip(){
+        tempCache = movieList
+        movieList = favList
+    }
+    func favoritesBackFlip(){
+        favList = movieList
+        movieList = tempCache
     }
     private func loadMoreMovies(){
 

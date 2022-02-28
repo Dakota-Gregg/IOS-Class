@@ -25,19 +25,22 @@ class CustomMovieTableViewCell: UITableViewCell{
     @IBOutlet weak var lblOverview: UILabel!
     @IBOutlet weak var lblTitle: UILabel!
     @IBOutlet weak var picPoster: UIImageView!
-    func configureCell(row: Int, title: String?, overview: String?, favorite: Bool){
+    func configureCell(row: Int, title: String?, overview: String?){
         lblOverview.text = overview
         lblTitle.text = title
         rowSelected = row
-        if favorite{
-            picCheckMark.isHidden = false
-        }
     }
     func configureImage(row: Int, viewModel: ViewModel){
         picPoster.image = nil
         viewModel.getPoster(row: row){[weak self] data in
             let image = UIImage(data: data)
             self?.picPoster.image = image
+            if viewModel.movieList[row].isFav == true{
+                self!.picCheckMark.isHidden = false
+            }
+            else {
+                self!.picCheckMark.isHidden = true
+            }
         }
     }
     override func prepareForReuse() {

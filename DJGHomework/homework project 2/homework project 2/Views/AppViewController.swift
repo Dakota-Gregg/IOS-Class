@@ -14,12 +14,21 @@ class AppViewController: UIViewController, UITableViewDelegate, UISearchBarDeleg
     private let viewModel = ViewModel()
     private var subscribers = Set<AnyCancellable>()
     private var subscribersPosters = Set<AnyCancellable>()
+    @IBOutlet private weak var segFavorites: UISegmentedControl!
     @IBOutlet private weak var txtName: UITextField!
     @IBOutlet private weak var lblName: UILabel!
     @IBOutlet private weak var tblMoviesList: UITableView!
     @IBOutlet private weak var searchBar: UISearchBar!
     @IBAction private func segFavorites(_ sender: Any) {
-        
+        if segFavorites.selectedSegmentIndex == 0{
+            viewModel.favoritesBackFlip()
+        }
+        else{
+            viewModel.favoritesFlip()
+        }
+//        print("The favorite list has not been cleared \(UserDefaults.standard.object(forKey: "favList"))")
+  //      viewModel.clearFavorites()
+   //     print("The favorite list has been cleared \(UserDefaults.standard.object(forKey: "favList"))")
     }
     @IBAction private func txtName(_ sender: Any) {
         lblName.text = txtName.text
@@ -60,6 +69,8 @@ class AppViewController: UIViewController, UITableViewDelegate, UISearchBarDeleg
         viewModel.$favList.receive(on: RunLoop.main)
             .sink{[weak self] _ in self?.tblMoviesList.reloadData()}
             .store(in: &subscribers)
+     //   viewModel.clearFavorites()
+        viewModel.getFavoriteMovies()
         
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -81,7 +92,7 @@ extension AppViewController:UITableViewDataSource{
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "movieCell", for: indexPath) as? CustomMovieTableViewCell
         else{return UITableViewCell()}
         let currentMovie = viewModel.movieList[indexPath.row]
-        cell.configureCell(row: indexPath.row, title: currentMovie.originalTitle, overview: currentMovie.overview, favorite: currentMovie.isFav)
+        cell.configureCell(row: indexPath.row, title: currentMovie.originalTitle, overview: currentMovie.overview)
         cell.configureImage(row: indexPath.row, viewModel: viewModel)
         cell.showDetail = { [weak self] row in
                     self?.viewModel.selectMovie(row: indexPath.row)
